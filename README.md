@@ -51,8 +51,8 @@ python ../../tools/eval.py 	 \
 	--dataset ../../data/Cows         \ # dataset name
 	--num 1 		 \ # number thread to eval
 	--tracker_prefix 'model'   # tracker_name
-```
-```
+
+
 
 
 
