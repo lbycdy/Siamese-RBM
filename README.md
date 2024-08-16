@@ -40,18 +40,19 @@ python -u ../../tools/test.py 	\
 
 The testing results will in the current directory(results/dataset/model_name/)
 ```
+
 ### Eval tracker
 
 assume still in experiments/siamban_r50_l234
 
-``` bash
+`` bash
 python ../../tools/eval.py 	 \
 	--tracker_path ./results \ # result path
 	--dataset ../../data/Cows         \ # dataset name
 	--num 1 		 \ # number thread to eval
 	--tracker_prefix 'model'   # tracker_name
 ```
-
+```
 
 
 
