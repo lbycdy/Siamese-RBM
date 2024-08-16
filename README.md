@@ -10,6 +10,7 @@ Please find installation instructions in [`INSTALL.md`](INSTALL.md).
 
 ```bash
 export PYTHONPATH=/path/to/Siamese-RBM:$PYTHONPATH
+export CUDA_VISIBLE_DEVICES=0,1,2,3
 ```
 
 ### Download models
@@ -17,18 +18,18 @@ export PYTHONPATH=/path/to/Siamese-RBM:$PYTHONPATH
 Download models in [Model Zoo](MODEL_ZOO.md) and put the `model.pth` in the correct directory in experiments
 
 
-
-### Download testing datasets
-
-Download datasets and put them into `testing_dataset` directory. Jsons of commonly used datasets can be downloaded from [here](https://drive.google.com/drive/folders/10cfXjwQQBQeu48XMf2xc_W1LucpistPI) or [here](https://pan.baidu.com/s/1et_3n25ACXIkH063CCPOQQ), extraction code: `8fju`. If you want to test tracker on new dataset, please refer to [pysot-toolkit](https://github.com/StrangerZhang/pysot-toolkit) to setting `testing_dataset`. 
+###  Training :wrench:
+``` bash
+python ../../tools/lbtrainDogCatHorseAsPersonV017PerTKMobileOneWeightAddS16S32CATS8singleclass4gpu_ACMOutPointMaskCROPBBnoRKDropout_HeadPadding.py 	 \
+	--dataset ../../data/Cows        \ # dataset name
 
 ### Test tracker
 
 ```bash
-cd experiments/siamban_r50_l234
+cd experiments/siamese_r50_l234
 python -u ../../tools/test.py 	\
-	--snapshot model.pth 	\ # model path
-	--dataset VOT2018 	\ # dataset name
+	--snapshot ****.pth 	\ # model path
+	--dataset ../../data/Cows  	\ # dataset name
 	--config config.yaml	  # config file
 ```
 
@@ -41,16 +42,12 @@ assume still in experiments/siamban_r50_l234
 ``` bash
 python ../../tools/eval.py 	 \
 	--tracker_path ./results \ # result path
-	--dataset VOT2018        \ # dataset name
+	--dataset ../../data/Cows         \ # dataset name
 	--num 1 		 \ # number thread to eval
 	--tracker_prefix 'model'   # tracker_name
 ```
 
-###  Training :wrench:
+```
 
-See [TRAIN.md](TRAIN.md) for detailed instruction.
 
-## License
 
-This project is released under the [Apache 2.0 license](LICENSE). 
-Unable to determine the device handle for GPU 0000:C1:00.0: Unknown Error
