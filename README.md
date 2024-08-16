@@ -30,7 +30,7 @@ python ../../tools/lbtrainDogCatHorseAsPersonV017PerTKMobileOneWeightAddS16S32CA
  ```
 
 ### Test tracker
-
+```
 `` bash
 python -u ../../tools/test.py 	\
 	--snapshot ****.pth 	\ # model path
@@ -39,10 +39,10 @@ python -u ../../tools/test.py 	\
 ```
 
 The testing results will in the current directory(results/dataset/model_name/)
-```
+
 
 ### Eval tracker
-
+```
 assume still in experiments/siamban_r50_l234
 
 `` bash
