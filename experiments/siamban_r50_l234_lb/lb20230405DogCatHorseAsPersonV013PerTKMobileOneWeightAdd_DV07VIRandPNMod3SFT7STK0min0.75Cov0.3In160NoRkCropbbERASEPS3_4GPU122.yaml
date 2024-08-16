@@ -1,0 +1,185 @@
+META_ARC: "siamban_mobilev2_l5_upxcorr"
+
+BACKBONE:
+    TYPE: 'mobileones16outtwo'
+    PRETRAINED: '/home/zhangming/work/siamban_GOTREMO/mobileone_s0_unfused.pth.tar'
+    TRAIN_EPOCH: 0
+    LAYERS_LR: 0.1
+    DROPOUT: 0.3
+    DROPOUTHW: 0.05
+POINT:
+    STRIDE: 8
+    SCALE_POS: 3.0
+    SCALE_NEG: 2.0
+TRACK:
+    TYPE: 'SiamBANTracker'
+#    WINDOW_INFLUENCE: 0.3850733326567302  # OTB100
+#    PENALTY_K: 0.020530504470126613  # OTB100
+#    LR: 0.4730770315643308  # OTB100
+    WINDOW_INFLUENCE: 0.454
+    PENALTY_K: 0.075
+    LR: 0.431
+    EXEMPLAR_SIZE: 127
+    INSTANCE_SIZE: 255
+    BASE_SIZE: 8
+    CONTEXT_AMOUNT: 0.5
+
+BAN:
+    channels: 192
+    KWARGS:
+        cls_out_channels: 2  #No Use for this config
+
+TRAIN:
+    DATA_NORMALIZE_MODE: 1
+    FLAG_SIGMOID_LOSS: True
+    EXEMPLAR_SIZE: 160
+    SEARCH_SIZE: 160
+    OUTPUT_SIZE: 19
+    NEGPOS_RATIO: 3.0
+    EPOCH: 20
+    START_EPOCH: 0 # 0 or resume checkpoint
+    BATCH_SIZE: 4
+    BASE_LR: 0.005
+    CLS_WEIGHT: 1.0
+    LOC_WEIGHT: 1.0
+    RANK_CLS_WEIGHT: 0.0
+    RANK_IGR_WEIGHT: 0.0
+    IoU_Gamma: 3
+    RESUME: ''
+    POS_NUM: 36
+    NEG_NUM: 108
+    TOTAL_NUM: 144
+    WEIGHT_DECAY: 0.0005
+    WEIGHT_DECAY_BB: 0.001
+    NPOS_SEL_RANK: 15
+    LR:
+        TYPE: 'log'
+        KWARGS:
+            start_lr: 0.005
+            end_lr: 0.00005
+    LR_WARMUP:
+        TYPE: 'step'
+        EPOCH: 5
+        KWARGS:
+            start_lr: 0.001
+            end_lr: 0.005
+            step: 1
+
+#    LOG_DIR: '/home/zhangming/sdd/Results/0016_GOT/20220915MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid'
+#    SNAPSHOT_DIR: '/home/zhangming/sdd/Results/0016_GOT/20220915MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid'
+#    LOG_DIR: '/home/inspur/Models/Results/0016_GOT/20220919MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid_Changepadding'
+#    SNAPSHOT_DIR: '/home/inspur/Models/Results/0016_GOT/20220919MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid_Changepadding'
+    NUM_WORKERS: 4
+
+DATASET:
+    DATASETID: 3
+    FLAG_CHANGEPADDING: True
+    CHANGEPADDING_VALUE: (117,117,117)
+    CATDOGHORSETK:
+        LAMBDA_MIN_SCALE: -0.75
+        LAMBDA_MAX_SCALE: 0.5
+        LAMBDA_MIN_RATIO: -0.3
+        LAMBDA_MAX_RATIO: 0.3
+        COVEA: 0.3
+        POSNEG_MODE: 3
+        SHIFT_MODE: 7
+        ERASE: 0.5
+        ERASE_MIN: 0.02
+        ERASE_MAX: 0.4
+        ERASE_RATIO: 0.3
+        PROB_CROPTEMPLATE: 0.3
+        SCALE_CROPTEMPLATE: 0.7
+        NBATCH_SHAPREPREV: 4
+        PROB_IMG: 0.6
+        FLAG_TEMPLATESEARCH_SIZEFROMCONFIG: True
+        FLIP_TEMPLATE: 0.5
+        FLIPVER_TEMPLATE: 0.1
+        FLIP_SEARCH: 0.5
+        FLIPVER_SEARCH: 0.2
+        TYPE_CONTEXTBOX: 0
+        KCONTEXTFACTOR: 2.0
+        NUM_NEG_OTHEROBJECT: 8
+        NUM_NEG_GENERATE_PER_IMAGE: 12
+        NUM_NEG_GENERATE_PER_FRAME: 12
+        PROB_TEMPLATEFROMIMG: 0.7
+        KCONTEXTFACTORSHIFTBOX: 2.0
+        CROPBB: True
+
+    NAMES:
+        - 'VID'
+        - 'COCO'
+        - 'DET'
+        - 'GOT10K'
+        - 'LASOT'
+        - 'REMOCATDOGHORSE'
+
+
+    REMOCATDOGHORSE:
+        ROOT: '/mnt/GOT/CatDogHorse'
+        ANNO: '/mnt/GOT/CatDogHorse/Layout/train_until20221105.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    VID:
+        ROOT: '/mnt/GOT/ILSVRC2015/crop511'
+        ANNO: '/mnt/GOT/ILSVRC2015/train_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    YOUTUBEBB:
+        ROOT: '/mnt/GOT/Ocean/YTB/y2b/crop511'
+        ANNO: '/mnt/GOT/Ocean/YTB/train_imgallexist_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    COCO:
+        ROOT: '/mnt/GOT/coco/crop511'
+        ANNO: '/mnt/GOT/coco/train2017_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    DET:
+        ROOT: '/mnt/GOT/ImageNetDet/crop511'
+        ANNO: '/mnt/GOT/ImageNetDet/train_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    GOT10K:
+        ROOT: '/mnt/GOT/GOT10K/got10k/crop511'
+        ANNO: '/mnt/GOT/GOT10K/got10k/train_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+    LASOT:
+        ROOT: '/mnt/GOT/LaSOT/crop511'
+        ANNO: '/mnt/GOT/LaSOT/train.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+
+    VIDEOS_PER_EPOCH: 400000
+
+    TEMPLATE:
+        SHIFT: 4
+        SCALE: 0.05
+        BLUR: 0.0
+        FLIP: 0.2
+        COLOR: 1.0
+
+    SEARCH:
+        PROB_RANDEREASE: 0.3
+        SCALEMIN_RANDEREASE: 0.25
+        SCALEMAX_RANDEREASE: 0.5
+        SCALE: 0.5
+        BLUR: 0.2
+        FLIP: 0.5
+        COLOR: 1.0
+
+    NEG: 0.4
+    GRAY: 0.0

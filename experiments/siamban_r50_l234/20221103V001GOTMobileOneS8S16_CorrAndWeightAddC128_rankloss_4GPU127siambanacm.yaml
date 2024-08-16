@@ -1,0 +1,114 @@
+META_ARC: "siamban_mobilev2_l5_upxcorr"
+
+BACKBONE:
+    TYPE: 'mobileones8s16outtwo'
+    PRETRAINED: '/home/inspur/work/pysot_REMO/pretrained_model/mobileone_s0_unfused.pth.tar'
+    TRAIN_EPOCH: 10
+    LAYERS_LR: 0.1
+
+
+POINT:
+    STRIDE: 8
+
+TRACK:
+    TYPE: 'SiamBANTracker'
+#    WINDOW_INFLUENCE: 0.3850733326567302  # OTB100
+#    PENALTY_K: 0.020530504470126613  # OTB100
+#    LR: 0.4730770315643308  # OTB100
+    WINDOW_INFLUENCE: 0.454
+    PENALTY_K: 0.075
+    LR: 0.431
+    EXEMPLAR_SIZE: 127
+    INSTANCE_SIZE: 255
+    BASE_SIZE: 8
+    CONTEXT_AMOUNT: 0.5
+
+BAN:
+    channels: 128
+    KWARGS:
+        cls_out_channels: 2  #No Use for this config
+
+TRAIN:
+    DATA_NORMALIZE: True
+    DATA_NORMALIZE_MODE: 1
+    FLAG_SIGMOID_LOSS: True
+    EPOCH: 20
+    START_EPOCH: 0 # 0 or resume checkpoint
+    BATCH_SIZE: 28
+    BASE_LR: 0.005
+    CLS_WEIGHT: 1.0
+    LOC_WEIGHT: 1.0
+    RANK_CLS_WEIGHT: 0.5
+    RANK_IGR_WEIGHT: 0.25
+    IoU_Gamma: 3
+#    RESUME: '/home/zhangming/sdd/Results/0016_GOT/20220915MobilenetV2_3GPU120_OneMidFeatSigmoid/20220915MobilenetV2_3GPU120_OneMidFeatSigmoid/checkpoint_e10.pth' # '' or 'snapshot/checkpoint_e.pth'
+    RESUME: ''
+
+    LR:
+        TYPE: 'log'
+        KWARGS:
+            start_lr: 0.005
+            end_lr: 0.00005
+    LR_WARMUP:
+        TYPE: 'step'
+        EPOCH: 5
+        KWARGS:
+            start_lr: 0.001
+            end_lr: 0.005
+            step: 1
+
+#    LOG_DIR: '/home/zhangming/sdd/Results/0016_GOT/20220915MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid'
+#    SNAPSHOT_DIR: '/home/zhangming/sdd/Results/0016_GOT/20220915MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid'
+#    LOG_DIR: '/home/inspur/Models/Results/0016_GOT/20220919MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid_Changepadding'
+#    SNAPSHOT_DIR: '/home/inspur/Models/Results/0016_GOT/20220919MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid_Changepadding'
+    NUM_WORKERS: 8
+
+DATASET:
+    FLAG_CHANGEPADDING: True
+    CHANGEPADDING_VALUE: (117,117,117)
+
+    NAMES:
+    - 'VID'
+    - 'YOUTUBEBB'
+    - 'COCO'
+    - 'DET'
+    - 'GOT10K'
+    - 'LASOT'
+
+    VID:
+        ROOT: '/home/inspur/SSD_DATA/GOT/ILSVRC2015/crop511'
+        ANNO: '/home/inspur/SSD_DATA/GOT/ILSVRC2015/train.json'
+    YOUTUBEBB:
+        ROOT: '/home/inspur/SSD_DATA/GOT/Ocean/YTB/y2b/crop511'
+        ANNO: '/home/inspur/SSD_DATA/GOT/Ocean/YTB/train_imgallexist.json'
+    COCO:
+        ROOT: '/home/inspur/SSD_DATA/GOT/coco/crop511'
+        ANNO: '/home/inspur/SSD_DATA/GOT/coco/train2017.json'
+    DET:
+        ROOT: '/home/inspur/SSD_DATA/GOT/ImageNetDet/crop511'
+        ANNO: '/home/inspur/SSD_DATA/GOT/ImageNetDet/train.json'
+    GOT10K:
+        ROOT: '/home/inspur/SSD_DATA/GOT/GOT10k/got10k/crop511'
+        ANNO: '/home/inspur/SSD_DATA/GOT/GOT10k/got10k/train.json'
+    LASOT:
+        ROOT: '/home/inspur/SSD_DATA/GOT/LaSOT/crop511'
+        ANNO: '/home/inspur/SSD_DATA/GOT/LaSOT/train.json'
+
+    VIDEOS_PER_EPOCH: 1000000
+
+    TEMPLATE:
+        SHIFT: 4
+        SCALE: 0.05
+        BLUR: 0.0
+        FLIP: 0.0
+        COLOR: 1.0
+
+    SEARCH:
+        SHIFT: 80
+        SCALE: 0.5
+        BLUR: 0.2
+        FLIP: 0.2
+        COLOR: 1.0
+
+    NEG: 0.2
+    GRAY: 0.0

@@ -1,0 +1,210 @@
+META_ARC: "siamban_mobilev2_l5_upxcorr"
+
+BACKBONE:
+    TYPE: 'mobileones16outtwo'
+    PRETRAINED: '/home/inspur/work/pysot_REMO/pretrained_model/mobileone_s0_unfused.pth.tar'
+    TRAIN_EPOCH: 0
+    LAYERS_LR: 0.1
+
+
+POINT:
+    SCALE_POS: 4.0
+    SCALE_NEG: 2.0
+    STRIDE: 8
+
+TRACK:
+    TYPE: 'SiamBANTracker'
+#    WINDOW_INFLUENCE: 0.3850733326567302  # OTB100
+#    PENALTY_K: 0.020530504470126613  # OTB100
+#    LR: 0.4730770315643308  # OTB100
+    WINDOW_INFLUENCE: 0.454
+    PENALTY_K: 0.075
+    LR: 0.431
+    EXEMPLAR_SIZE: 127
+    INSTANCE_SIZE: 255
+    BASE_SIZE: 8
+    CONTEXT_AMOUNT: 0.5
+
+BAN:
+    channels: 192
+    KWARGS:
+        cls_out_channels: 2  #No Use for this config
+
+TRAIN:
+    FLAGCLASSONCORR: False
+    PROB_DROPOUT: 0.1
+    PROB_DROPOUTSPATIAL: 0.05
+    WEIGHT_DECAY_BB: 0.001
+    WEIGHT_DECAY: 0.0005
+    NORM_REG_TARGETS: True
+    FLAG_SIGMOID_LOSS: True
+    EXEMPLAR_SIZE: 160
+    SEARCH_SIZE: 160
+    OUTPUT_SIZE: 19
+    NEGPOS_RATIO: 3.0
+    EPOCH: 20
+    START_EPOCH: 0 # 0 or resume checkpoint
+    BATCH_SIZE: 4
+    BASE_LR: 0.005
+    CLS_WEIGHT: 1.0
+    LOC_WEIGHT: 3.0
+    RANK_CLS_WEIGHT: 0.0
+    RANK_IGR_WEIGHT: 0.0
+    RANK_IGR_MODE: 1
+    NPOS_SEL_RANK: 10
+    RESUME: ''
+
+    LR:
+        TYPE: 'log'
+        KWARGS:
+            start_lr: 0.005
+            end_lr: 0.00005
+    LR_WARMUP:
+        TYPE: 'step'
+        EPOCH: 5
+        KWARGS:
+            start_lr: 0.001
+            end_lr: 0.005
+            step: 1
+
+#    LOG_DIR: '/home/zhangming/sdd/Results/0016_GOT/20220915MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid'
+#    SNAPSHOT_DIR: '/home/zhangming/sdd/Results/0016_GOT/20220915MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid'
+#    LOG_DIR: '/home/inspur/Models/Results/0016_GOT/20220919MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid_Changepadding'
+#    SNAPSHOT_DIR: '/home/inspur/Models/Results/0016_GOT/20220919MobilenetV2_BANACM_4GPU120_OneMidFeatSigmoid_Changepadding'
+    NUM_WORKERS: 4
+
+DATASET:
+    DATASETID: 10
+    FLAG_CHANGEPADDING: True
+    CHANGEPADDING_VALUE: (117,117,117)
+    CATDOGHORSETK:
+        FLAG_RANDOMCHOICEDATA: True
+        LAMBDA_MIN_SCALE: -0.5
+        LAMBDA_MAX_SCALE: 0.5
+        LAMBDA_MIN_RATIO: -0.35
+        LAMBDA_MAX_RATIO: 0.35
+        COVEA: 0.5
+        POSNEG_MODE: 3
+        SHIFT_MODE: 1
+        PROB_CROPTEMPLATE: 0.5
+        SCALE_CROPTEMPLATE: 0.6
+        NBATCH_SHAPREPREV: 4
+        PROB_IMG: 0.6
+        FLAG_TEMPLATESEARCH_SIZEFROMCONFIG: True
+        FLIP_TEMPLATE: 0.5
+        FLIPVER_TEMPLATE: 0.0
+        FLIP_SEARCH: 0.5
+        FLIPVER_SEARCH: 0.0
+        TYPE_CONTEXTBOX: 1
+        KCONTEXTFACTOR: 0.5
+        NUM_NEG_OTHEROBJECT: 8
+        NUM_NEG_GENERATE_PER_IMAGE: 12
+        NUM_NEG_GENERATE_PER_FRAME: 12
+        PROB_TEMPLATEFROMIMG: 0.7
+        KCONTEXTFACTORSHIFTBOX: 2.0
+        RATIO_TO_SHRINK: 1.5
+        DEFROM_MIN: 0.85
+        DEFROM_MAX: 1.15
+        PROB_SHRINK: 0.5
+        RATIOMAX_TO_SHRINK: 5.0
+    NAMES:
+        - 'VID'
+        - 'COCO'
+        - 'DET'
+        - 'GOT10K'
+        - 'LASOT'
+        - 'REMOCATDOGHORSE'
+        - 'REMOWIKICATHIGDOGANNORESULT20230324'
+        - 'REMOWIKICATHIGDOGANNORESULT20230328'
+        - 'REMOWIKICATHIGDOGANNORESULT20230331'
+
+    REMOCATDOGHORSE:
+        ROOT: '/mnt/data/Datasets/GOT/CatDogHorse'
+        ANNO: '/mnt/DataHDD/Datasets/GOT/CatDogHorse/Layout//train_until20221105.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    REMOWIKICATHIGDOGANNORESULT20230324:
+        ROOT: '/mnt/data/Datasets/GOT/CatDogHorse/TransferedData'
+        ANNO: '/mnt/DataHDD/Datasets/GOT/CatDogHorse/Layout/traincatdog_wikicat_dogsInTheWildHighRes_20230324.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    REMOWIKICATHIGDOGANNORESULT20230328:
+        ROOT: '/mnt/data/Datasets/GOT/CatDogHorse/TransferedData'
+        ANNO: '/mnt/DataHDD/Datasets/GOT/CatDogHorse/Layout/traincatdog_wikicat_dogsInTheWildHighRes_20230328.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    REMOWIKICATHIGDOGANNORESULT20230331:
+        ROOT: '/mnt/data/Datasets/GOT/CatDogHorse/TransferedData'
+        ANNO: '/mnt/DataHDD/Datasets/GOT/CatDogHorse/Layout/traincatdog_wikicat_dogsInTheWildHighRes_20230331.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    VID:
+        ROOT: '/mnt/data/Datasets/GOT/ILSVRC2015/crop511'
+        ANNO: '/mnt/data/Datasets/GOT/ILSVRC2015/train_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    YOUTUBEBB:
+        ROOT: '/mnt/data/Datasets/GOT/Ocean/YTB/y2b/crop511'
+        ANNO: '/mnt/data/Datasets/GOT/Ocean/YTB/train_imgallexist_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    COCO:
+        ROOT: '/mnt/data/Datasets/GOT/coco/crop511'
+        ANNO: '/mnt/data/Datasets/GOT/coco/train2017_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    DET:
+        ROOT: '/mnt/data/Datasets/GOT/ImageNetDet/crop511'
+        ANNO: '/mnt/data/Datasets/GOT/ImageNetDet/train_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: 50000
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+    GOT10K:
+        ROOT: '/mnt/data/Datasets/GOT/GOT10K/got10k/crop511'
+        ANNO: '/mnt/data/Datasets/GOT/GOT10K/got10k/train_withclassname.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+    LASOT:
+        ROOT: '/mnt/data/Datasets/GOT/LaSOT/crop511'
+        ANNO: '/mnt/data/Datasets/GOT/LaSOT/train.json'
+        NUM_USE_DOG: -1
+        NUM_USE_CAT: -1
+        NUM_USE_HORSE: -1
+        NUM_USE_OTHER: -1
+
+    VIDEOS_PER_EPOCH: 400000
+
+    TEMPLATE:
+        SHIFT: 4
+        SCALE: 0.05
+        BLUR: 0.0
+        FLIP: 0.2
+        COLOR: 1.0
+
+    SEARCH:
+        PROB_RANDEREASE: 0.3
+        SCALEMIN_RANDEREASE: 0.25
+        SCALEMAX_RANDEREASE: 0.5
+        SCALE: 0.5
+        BLUR: 0.2
+        FLIP: 0.5
+        COLOR: 1.0
+
+    NEG: 0.4
+    GRAY: 0.0
