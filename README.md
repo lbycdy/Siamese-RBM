@@ -23,6 +23,8 @@ cd experiments/siamese_r50_l234lb
 
 ```
 ###  Training :wrench:
+
+`` bash
 python ../../tools/lbtrainDogCatHorseAsPersonV017PerTKMobileOneWeightAddS16S32CATS8singleclass4gpu_ACMOutPointMaskCROPBBnoRKDropout_HeadPadding.py 	 \
 	--dataset ../../data/Cows        \ # dataset name
  ```
@@ -50,7 +52,6 @@ python ../../tools/eval.py 	 \
 	--tracker_prefix 'model'   # tracker_name
 ```
 
-```
 
 
 
