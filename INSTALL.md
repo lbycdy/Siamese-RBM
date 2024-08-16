@@ -1,6 +1,6 @@
 # Installation
 
-This document contains detailed instructions for installing dependencies for SiamBAN. We recommand using the [install.sh](install.sh). The code is tested on an Ubuntu 18.04 system with Nvidia GPU (We recommand 1080TI / TITAN V).
+This document contains detailed instructions for installing dependencies for Siamese-RBM. We recommand using the [install.sh](install.sh). The code is tested on an Ubuntu 18.04 system with Nvidia GPU (We recommand 3090TI / TITAN V).
 
 ### Requirments
 * Conda with Python 3.7
